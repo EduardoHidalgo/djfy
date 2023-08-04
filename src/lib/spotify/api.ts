@@ -30,6 +30,14 @@ export class Spotify {
       code_verifier: this.codeVerifier,
     });
 
+    console.log({
+      grant_type: "authorization_code",
+      code: this.code,
+      redirect_uri: this.redirectUri,
+      client_id: this.clientId,
+      code_verifier: this.codeVerifier,
+    });
+
     const response = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
       headers: {
@@ -45,6 +53,8 @@ export class Spotify {
       })
       .then((data) => data.access_token as string)
       .catch((error) => new Error(error));
+
+    console.log({ response });
 
     return response;
   }
