@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import { useSpotifySession } from "@/hooks/useSpotifySession";
 import { generateUrlAuthCodeFlow } from "@/lib/callbacks";
+import { Button } from "@/components/button";
 
 interface HomePageProps {}
 
@@ -29,11 +30,8 @@ const HomePage: FC<HomePageProps> = ({}) => {
   }
 
   return (
-    <main>
-      <h1 className="text-white">djfy</h1>
-      <button className="text-white" onClick={onClickSpotifyLogin}>
-        spotify login
-      </button>
+    <main className="p-2">
+      <Button label="spotify login" onClick={onClickSpotifyLogin} />
     </main>
   );
 };
