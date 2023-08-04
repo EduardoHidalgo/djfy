@@ -59,6 +59,7 @@ const DashboardPage: FC<DashboardPageProps> = ({}) => {
     clientId: String(process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID),
     code: session.code!,
     codeVerifier: session.codeVerifier!,
+    redirectUri: String(process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI),
   });
 
   const retrieveAndSetToken = async () => {

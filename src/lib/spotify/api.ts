@@ -4,21 +4,23 @@ export class Spotify {
   private code: string;
   private clientId: string;
   private codeVerifier: string;
-
-  private redirectUri = "http://localhost:3000/callback";
+  private redirectUri: string;
 
   constructor({
     clientId,
     code,
     codeVerifier,
+    redirectUri,
   }: {
     clientId: string;
     code: string;
     codeVerifier: string;
+    redirectUri: string;
   }) {
     this.clientId = clientId;
     this.code = code;
     this.codeVerifier = codeVerifier;
+    this.redirectUri = redirectUri;
   }
 
   async getToken(): Promise<string | Error> {
