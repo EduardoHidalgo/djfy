@@ -58,15 +58,11 @@ export const useSpotifySession = (): {
 
         if (now.getTime() > new Date(tempSession.expires).getTime()) {
           setSession(null);
-          return setState(SessionState.success);
+          return setState(SessionState.revalidate);
         }
       }
 
       setSession(tempSession);
-
-      if (tempSession.token === undefined)
-        return setState(SessionState.revalidate);
-
       return setState(SessionState.success);
     } catch (error) {
       console.error(error);

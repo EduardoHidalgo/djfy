@@ -8,42 +8,6 @@ import { Song, UIState } from "@/types";
 import { DropdownItem } from "@/components/dropdownMenu/types";
 import { redirect } from "next/navigation";
 
-const songs: Array<Song> = [
-  {
-    album: "Sick and Crazy",
-    artist: "The Crazy Squirrels",
-    date: new Date(),
-    duration: 245000,
-    genre: "Metal",
-    id: 1,
-    image: "https://i.scdn.co/image/ab67616d00004851c64394880acb8d4e351ea767",
-    rating: 4,
-    title: "Ripper Apart",
-  },
-  {
-    album: "Sick and Crazy",
-    artist: "The Crazy Squirrels",
-    date: new Date(),
-    duration: 210000,
-    genre: "Metal",
-    id: 2,
-    image: "https://i.scdn.co/image/ab67616d00004851c64394880acb8d4e351ea767",
-    rating: 3,
-    title: "Always",
-  },
-  {
-    album: "Sick and Crazy",
-    artist: "The Crazy Squirrels",
-    date: new Date(),
-    duration: 230000,
-    genre: "Metal",
-    id: 3,
-    image: "https://i.scdn.co/image/ab67616d00004851c64394880acb8d4e351ea767",
-    rating: 0,
-    title: "Psychosocial",
-  },
-];
-
 interface DashboardPageProps {}
 
 const DashboardPage: FC<DashboardPageProps> = ({}) => {
@@ -53,14 +17,21 @@ const DashboardPage: FC<DashboardPageProps> = ({}) => {
   const [state, setState] = useState<UIState>(UIState.loading);
 
   useEffect(() => {
-    if (sessionState === SessionState.revalidate) {
-      retrieveAndSetToken();
-    }
-
     if (session !== null && sessionState === SessionState.success) {
-      getSavedTracks();
+      if (session.token === undefined) {
+        retrieveAndSetToken();
+      }
     }
   }, [sessionState]);
+
+  useEffect(() => {
+    if (session && session.token !== undefined) {
+      getSavedTracks();
+    }
+  }, [session]);
+
+  if (session === null && sessionState === SessionState.revalidate)
+    return redirect("/");
 
   if (session === null && sessionState === SessionState.success)
     return redirect("/");
@@ -117,8 +88,6 @@ const DashboardPage: FC<DashboardPageProps> = ({}) => {
         return console.error(result);
       }
 
-      console.log({ result });
-
       const tempSongs = result.items.map<Song>((item, index) => {
         const artist: string = item.track.artists
           .map<string>((ar) => ar.name)
@@ -136,8 +105,6 @@ const DashboardPage: FC<DashboardPageProps> = ({}) => {
           title: item.track.name,
         };
       });
-
-      console.log({ tempSongs });
 
       setSongs(tempSongs);
       setState(UIState.success);

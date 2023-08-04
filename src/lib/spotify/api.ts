@@ -30,7 +30,7 @@ export class Spotify {
       code_verifier: this.codeVerifier,
     });
 
-    const response = fetch("https://accounts.spotify.com/api/token", {
+    const response = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
