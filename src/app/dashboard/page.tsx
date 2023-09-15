@@ -76,6 +76,19 @@ const DashboardPage: FC<DashboardPageProps> = ({}) => {
     setSession({ ...session, token, expires: new Date(expiresDate) });
   };
 
+  const getFirstSavedTracks = async () => {
+    try {
+      const result = await spotify.getSavedTracks({
+        token: session.token!,
+        limit: 50,
+        offset: 0,
+      });
+    } catch (error) {
+      console.error(error);
+      setState(UIState.error);
+    }
+  };
+
   const getSavedTracks = async () => {
     try {
       const result = await spotify.getSavedTracks({
